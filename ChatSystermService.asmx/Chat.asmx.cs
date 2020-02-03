@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Services;
 
 namespace ChatSystermService.asmx
@@ -18,9 +15,18 @@ namespace ChatSystermService.asmx
     {
 
         [WebMethod]
-        public string HelloWorld()
+        public void Add(string data)
         {
-            return "Hello World";
+            Application.Lock();
+            var a = (List<string>)Application["ChatData"];
+            a.Add(data);
+            Application["ChatData"] = a;
+            Application.UnLock();
+        }
+        [WebMethod]
+        public List<string> Get()
+        {
+            return (List<string>)Application["ChatData"];
         }
     }
 }
